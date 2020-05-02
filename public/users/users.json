@@ -1,0 +1,27 @@
+[{
+    "credentials":{
+    "username":"abc@mno.com",
+    "password":"xyz",
+    "role":"User"},
+    "personal":{
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz"
+       
+      }
+},
+{
+    "credentials":{
+    "username":"pqr@abc.com",
+    "password":"mno",
+    "role":"Admin"},
+    "personal":{
+        "id": 2,
+        "name": "Ervin Howell",
+        "username": "Antonette",
+        "email": "Shanna@melissa.tv"
+        
+      }
+    }
+]
