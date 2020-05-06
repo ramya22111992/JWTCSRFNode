@@ -93,7 +93,7 @@ router.post('/login',csrfProtection,function(req,res,next)
                         res.cookie('user',user,{httpOnly:true,secure:false});
                         res.cookie('expiry',date.toUTCString(),{httpOnly:true,secure:false});
                         res.cookie("XSRF-TOKEN",csrfToken,{httpOnly:false,secure:false});
-                        res.status(200).send();
+                        res.status(200).send({user:user,role:role});
                     }
                 },1000) 
             }
