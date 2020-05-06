@@ -1,5 +1,4 @@
 const mod=require('../modules').module;
-
 const router = mod.express.Router();
 const privateKey=mod.fs.readFileSync('./public/keys/private.key','utf8');//To sign the payload
 

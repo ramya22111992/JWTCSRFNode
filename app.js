@@ -12,7 +12,6 @@ const app = mod.express();
 // view engine setup
 app.set('views', mod.path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(mod.logger('dev'));
 app.use(mod.cors(corsOptions));
 app.use(mod.express.json());
