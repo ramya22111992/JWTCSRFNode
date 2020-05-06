@@ -1,7 +1,7 @@
-const mod=require('./modules');
+const mod=require('../modules').module;
 
-const router = mod.module.express.Router();
-const privateKey=mod.module.fs.readFileSync('./public/keys/private.key','utf8');//To sign the payload
+const router = mod.express.Router();
+const privateKey=mod.fs.readFileSync('./public/keys/private.key','utf8');//To sign the payload
 
 
 function customValue(req)
@@ -9,9 +9,9 @@ function customValue(req)
   return req.headers['x-xsrf-token'];
 }
 
-const csrfProtection = mod.module.csurf({ cookie:{httpOnly:true},value:customValue}); //cookie parser needed
+const csrfProtection = mod.csurf({ cookie:{httpOnly:true},value:customValue}); //cookie parser needed
 
-const productImageUpload=mod.module.multer({storage:mod.module.multer.diskStorage({
+const productImageUpload=mod.multer({storage:mod.multer.diskStorage({
 
   destination:function(req,file,fun)
   {
@@ -40,7 +40,7 @@ router.get('/',csrfProtection,function(req,res,next)
 router.get('/IsLoggedIn',function(req,res,next)
         {
         const date=new Date().getTime();
-        const expired= mod.module.moment(date).isBefore(req.cookies.expiry);
+        const expired= mod.moment(date).isBefore(req.cookies.expiry);
         if(!expired)
         {
             res.status(401).send(false);  
@@ -62,7 +62,7 @@ router.post('/login',csrfProtection,function(req,res,next)
         let csrfToken="";
         
         
-        mod.module.fs.readFile('./public/users/users.json',"utf8",function(err,data)
+        mod.fs.readFile('./public/users/users.json',"utf8",function(err,data)
         {
             if(err) next(err); //Since it is async, we call next(err)
             let Userdata=JSON.parse(data);
@@ -73,7 +73,7 @@ router.post('/login',csrfProtection,function(req,res,next)
                 let role=filteredData[0].credentials.role;
                 csrfToken=req.csrfToken();
                 //sign the payload using the private key and generate the token
-                mod.module.jwt.sign({user:user,role:role,csrfToken:csrfToken},privateKey,{
+                mod.jwt.sign({user:user,role:role,csrfToken:csrfToken},privateKey,{
                   subject:user,  //intended user of the token
                   algorithm:"RS256",//signing algorithm
                   expiresIn:  "60000"   //token expires in 1 min,
@@ -117,7 +117,7 @@ router.post('/login',csrfProtection,function(req,res,next)
         productImageUpload(req,res,function(err)
             {
         
-                mod.module.fs.readFile('./public/users/products.json',"utf8",function(err,data)
+                mod.fs.readFile('./public/users/products.json',"utf8",function(err,data)
                 {
                 if(err) throw err;
                 
@@ -129,7 +129,7 @@ router.post('/login',csrfProtection,function(req,res,next)
                 productList.push(productData);
                 
                 
-                mod.module.fs.writeFile('./public/users/products.json',JSON.stringify(productList),function(err)
+                mod.fs.writeFile('./public/users/products.json',JSON.stringify(productList),function(err)
                 {
                     if(err) throw err;
                 
@@ -139,7 +139,7 @@ router.post('/login',csrfProtection,function(req,res,next)
                 })
         
         
-                if (err instanceof mod.module.multer.MulterError) {
+                if (err instanceof mod.multer.MulterError) {
                     console.log(err);
                   } else if (err) {
                       console.log(err);
@@ -153,13 +153,13 @@ router.post('/login',csrfProtection,function(req,res,next)
         
         router.get('/productID',AdminAuthFunc,function(req,res,next)
         {
-            res.status(200).send(mod.module.crypto.randomBytes(8).toString('hex'));
+            res.status(200).send(mod.crypto.randomBytes(8).toString('hex'));
         })
         
         router.get('/getProducts',UserAuthFunc,function(req,res,next)
         {
         
-            mod.module.fs.readFile('./public/users/products.json',"utf8",function(err,data)
+            mod.fs.readFile('./public/users/products.json',"utf8",function(err,data)
             {
             if(err) throw err;
             

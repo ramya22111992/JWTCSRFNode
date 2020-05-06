@@ -9,7 +9,7 @@ const moment=require('moment');
 const multer=require('multer');
 const crypto=require('crypto');
 const fs=require('fs');
-const role=require('../public/javascripts/roles');
+const role=require('./public/javascripts/roles');
 
 
 exports.module={

@@ -1,4 +1,4 @@
-const mod=require('./routes/modules');
+const mod=require('./modules').module;
 
 const corsOptions = {
   origin: 'http://localhost:4200',
@@ -7,18 +7,18 @@ const corsOptions = {
 
 const indexRouter = require('./routes/index');
 
-const app = mod.module.express();
+const app = mod.express();
 
 // view engine setup
-app.set('views', mod.module.path.join(__dirname, 'views'));
+app.set('views', mod.path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(mod.module.logger('dev'));
-app.use(mod.module.cors(corsOptions));
-app.use(mod.module.express.json());
-app.use(mod.module.express.urlencoded({ extended: false }));
-app.use(mod.module.cookieParser());
-app.use(mod.module.express.static(mod.module.path.join(__dirname, 'public')));
+app.use(mod.logger('dev'));
+app.use(mod.cors(corsOptions));
+app.use(mod.express.json());
+app.use(mod.express.urlencoded({ extended: false }));
+app.use(mod.cookieParser());
+app.use(mod.express.static(mod.path.join(__dirname, 'public')));
 
 
 app.use(function(req,res,next)

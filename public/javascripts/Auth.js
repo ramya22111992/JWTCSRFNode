@@ -1,19 +1,19 @@
-const mod=require('../../routes/modules');
-const publicKey=mod.module.fs.readFileSync('./public/keys/public.key','utf8'); //To verify the token
+const mod=require('../../modules').module;
+const publicKey=mod.fs.readFileSync('./public/keys/public.key','utf8'); //To verify the token
 
 exports.auth={
 
     IsAdminAuthenticated:function()
     {
         return function(req,res,next){
-       mod.module.jwt.verify(req.cookies.sessionId,publicKey,{
+       mod.jwt.verify(req.cookies.sessionId,publicKey,{
             subject:req.cookies.user
             ,  //intended user of the token
             algorithm:["RS256"],//signing algorithm
             expiresIn:  "60000"   //token expires in 1 min,
         },function(err,decoded)
         {
-        if(err ||decoded.role !==mod.module.role.admin)
+        if(err ||decoded.role !==mod.role.admin)
         {
         res.status(401).send(false); //No valid token/role not correct so unauthorised
         }
@@ -47,14 +47,14 @@ exports.auth={
     {
 
         return function(req,res,next){
-        mod.module.jwt.verify(req.cookies.sessionId,publicKey,{
+        mod.jwt.verify(req.cookies.sessionId,publicKey,{
             subject:req.cookies.user
             ,  //intended user of the token
             algorithm:["RS256"],//signing algorithm
             expiresIn:  "60000"   //token expires in 1 min,
         },function(err,decoded)
         {
-        if(err ||(decoded.role !== mod.module.role.user && decoded.role !== mod.module.role.admin))
+        if(err ||(decoded.role !== mod.role.user && decoded.role !== mod.role.admin))
         {
         res.status(401).send(false); //No valid token/role so unauthorised
         }
