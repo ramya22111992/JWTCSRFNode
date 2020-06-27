@@ -2,8 +2,8 @@ const mod=require('./modules').module;
 
 const corsOptions = {
   origin: 'http://localhost:4200',
-  methods:['GET','POST','PUT','DELETE'],
-  credentials: true  }
+  methods:['GET','POST','PUT','DELETE'] 
+}
 
 const indexRouter = require('./routes/index');
 
@@ -26,7 +26,7 @@ res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
 next(); //dont forget this, else next route wont be called.      
 })
 
-app.use('/', indexRouter);
+app.use('/csrf', indexRouter);
 
 
 // error handler
